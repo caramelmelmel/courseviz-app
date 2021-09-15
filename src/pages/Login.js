@@ -13,7 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 //import local images
 import image_reg from '../assets/sutd_reg.png'
-console.log(image_reg)
+
 
 function Copyright() {
   return (

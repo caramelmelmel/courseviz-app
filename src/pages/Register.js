@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Redirect } from 'react-router-dom';
-import { auth } from '../firebase/firebase.utils';
+// import { auth } from '../firebase/firebase.utils';
 //designing stuff
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
