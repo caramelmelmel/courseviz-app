@@ -53,11 +53,16 @@ const XocesWidget: React.FC<{ pillars: Pillar[], courses: Course[], mos: MO[], m
 
     // mo links
     moLinks.forEach((mol) => {
+        // reverse the direction of arrows, since we want
+        // prereq_mo -> mo instead of the opposite
+        const src = mol.dst;
+        const dst = mol.src;
+
         relationships.push({
             type: "HAS_PREREQUISITE_OF",
             directionality: "DIRECTED",
-            sourceId: "mo_" + mol.src,
-            targetId: "mo_" + mol.dst,
+            sourceId: "mo_" + src,
+            targetId: "mo_" + dst,
         })
     })
 

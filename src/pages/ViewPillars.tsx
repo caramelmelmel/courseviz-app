@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from "react-router-dom";
-import { Container, Box, Typography, Button, Link, Breadcrumbs } from "@material-ui/core";
+import { Container, Box, Typography, Button, Link } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import Breadcrumbs from '../components/Breadcrumbs';
 import services from "../services";
 
 const columns: GridColDef[] = [
@@ -27,11 +28,11 @@ const columns: GridColDef[] = [
             const id = String(params.row.id);
             return (
                 <Box display="flex" flexDirection="row" >
-                    <RouterLink to={`/pillars/${id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                    <RouterLink to={`/dashboard/pillars/${id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                         <Button variant="outlined" color="primary">View</Button>
                     </RouterLink>
 
-                    <RouterLink to={`/pillars/${id}/edit`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                    <RouterLink to={`/dashboard/pillars/${id}/edit`} style={{ color: 'inherit', textDecoration: 'none' }}>
                         <Button variant="outlined" color="primary">Edit</Button>
                     </RouterLink>
                 </Box>
@@ -58,10 +59,11 @@ const ViewPillars: React.FC = ({ }) => {
 
     return (
         <Container>
-            <Box my={2}>
+            <Breadcrumbs />
+            <Box>
                 <Box my={2} display="flex" flexDirection="row" justifyContent="space-between">
                     <Typography variant="h4">Pillars</Typography>
-                    <RouterLink to="/pillars/create" style={{ color: 'inherit', textDecoration: 'none' }}>
+                    <RouterLink to="/dashboard/pillars/create" style={{ color: 'inherit', textDecoration: 'none' }}>
                         <Button variant="outlined" color="primary" startIcon={<Add />}>Create Pillar</Button>
                     </RouterLink>
                 </Box>

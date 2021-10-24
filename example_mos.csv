@@ -1,0 +1,5 @@
+course_id,id,name
+50.002,MO 1,"State the role of abstraction in the design of large digital systems, and explain the major software and hardware abstractions in contemporary computer systems."
+50.002,MO 2,"Design simple hardware systems based on a variety of digital abstractions such as ROMs, logic arrays and state machines."
+50.002,MO 3,"Synthesize digital systems from a library of representative components and test the designs under simulation."
+50.002,MO 4,"Describe the operation of a moderately complex digital system — a simple RISC-based computer — down to the gate level, and be able to specify, implement and debug its components."

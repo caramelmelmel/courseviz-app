@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { Container, Typography, Box, Button, Link } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
+import { Add, PlaylistAdd } from "@material-ui/icons";
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import Breadcrumbs from '../components/Breadcrumbs';
 import services from "../services";
 
 const columns: GridColDef[] = [
@@ -19,11 +20,11 @@ const columns: GridColDef[] = [
             const cid = String(params.row.id_int);
             return (
                 <Box display="flex" flexDirection="row" >
-                    <RouterLink to={`/pillars/${pid}/courses/${cid}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                    <RouterLink to={`/dashboard/pillars/${pid}/courses/${cid}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                         <Button variant="outlined" color="primary">View</Button>
                     </RouterLink>
 
-                    <RouterLink to={`/pillars/${pid}/courses/${cid}/edit`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                    <RouterLink to={`/dashboard/pillars/${pid}/courses/${cid}/edit`} style={{ color: 'inherit', textDecoration: 'none' }}>
                         <Button variant="outlined" color="primary">Edit</Button>
                     </RouterLink>
                 </Box>
@@ -60,19 +61,30 @@ const ViewPillar: React.FC = ({ }) => {
 
     return (
         <Container>
-            <Box my={2}>
-                <Typography variant="h4">Pillar</Typography>
-                <Typography variant="h5">{pillar.name}</Typography>
+            <Breadcrumbs />
+            <Box>
+                <Typography variant="h4">{pillar.name}</Typography>
                 <Typography>{pillar.description}</Typography>
                 <Link href={pillar.website}>{pillar.website}</Link>
+
             </Box>
 
             <Box my={2}>
                 <Box my={2} display="flex" flexDirection="row" justifyContent="space-between">
                     <Typography variant="h4">Courses</Typography>
-                    <RouterLink to={`/pillars/${pid}/courses/create`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                        <Button variant="outlined" color="primary" startIcon={<Add />}>Create Course</Button>
-                    </RouterLink>
+
+                    <Box>
+                        <RouterLink to={`/dashboard/pillars/${pid}/courses/create`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                            <Button variant="outlined" color="primary" startIcon={<Add />}>Create Course</Button>
+                        </RouterLink>
+                        <RouterLink to={`/dashboard/pillars/${pid}/batch_create_course`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                            <Button variant="outlined" color="primary" startIcon={<PlaylistAdd />}>Batch Create Course</Button>
+                        </RouterLink>
+
+                        <RouterLink to={`/dashboard/pillars/${pid}/batch_create_outcome`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                            <Button variant="outlined" color="primary" startIcon={<PlaylistAdd />}>Batch Create MO</Button>
+                        </RouterLink>
+                    </Box>
                 </Box>
                 <div style={{ height: "500px" }}>
                     <DataGrid

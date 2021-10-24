@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Container, Typography, Box, Button, Grid, TextField } from "@material-ui/core";
+import Breadcrumbs from '../components/Breadcrumbs';
 import services from "../services";
 
 const EditPillar: React.FC = ({ }) => {
@@ -70,7 +71,7 @@ const EditPillar: React.FC = ({ }) => {
             return;
         }
 
-        history.push("/pillars");
+        history.push("/dashboard/pillars");
         return;
     }
 
@@ -86,14 +87,18 @@ const EditPillar: React.FC = ({ }) => {
             return;
         }
 
-        history.push("/pillars");
+        history.push("/dashboard/pillars");
         return;
     }
 
+    const cancelHandler = () => {
+        history.push("/dashboard/pillars");
+    }
 
     return (
         <Container>
-            <Box my={2} display="flex" flexDirection="column" alignItems="center">
+            <Breadcrumbs />
+            <Box display="flex" flexDirection="column" alignItems="center">
                 <Box my={2} display="flex" flexDirection="row" justifyContent="space-between" alignSelf="stretch">
                     <Typography variant="h4">Edit Pillar</Typography>
                 </Box>
@@ -149,8 +154,9 @@ const EditPillar: React.FC = ({ }) => {
                     </Grid>
                 </Box>
                 <Box my={2}>
-                    <Button variant="contained" color="primary" onClick={submitForm} >Update Pillar</Button>
-                    <Button variant="contained" style={{ color: "white", backgroundColor: "#dc3545" }} onClick={deleteHandler} >Delete Pillar</Button>
+                    <Button variant="contained" style={{ marginRight: "1rem" }} color="primary" onClick={submitForm} >Update Pillar</Button>
+                    <Button variant="contained" style={{ marginRight: "1rem", color: "white", backgroundColor: "#dc3545" }} onClick={deleteHandler} >Delete Pillar</Button>
+                    <Button variant="outlined" style={{ color: "#dc3545" }} onClick={cancelHandler} >Cancel</Button>
                 </Box>
             </Box>
         </Container>

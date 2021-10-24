@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Typography, Box, Button, Grid, TextField } from "@material-ui/core";
 import { useParams, useHistory } from "react-router-dom";
+import Breadcrumbs from '../components/Breadcrumbs';
 import services from "../services";
 
 const CreateCourse: React.FC = ({ }) => {
@@ -59,13 +60,18 @@ const CreateCourse: React.FC = ({ }) => {
             return;
         }
 
-        history.push(`/pillars/${pid}`);
+        history.push(`/dashboard/pillars/${pid}`);
         return;
+    }
+
+    const cancelHandler = () => {
+        history.push(`/dashboard/pillars/${pid}`);
     }
 
     return (
         <Container>
-            <Box my={2} display="flex" flexDirection="column" alignItems="center">
+            <Breadcrumbs />
+            <Box display="flex" flexDirection="column" alignItems="center">
                 <Box my={2} display="flex" flexDirection="row" justifyContent="space-between" alignSelf="stretch">
                     <Typography variant="h4">Create New Course</Typography>
                 </Box>
@@ -118,6 +124,7 @@ const CreateCourse: React.FC = ({ }) => {
                 </Box>
                 <Box my={2}>
                     <Button variant="contained" color="primary" onClick={submitForm} >Create Course</Button>
+                    <Button variant="outlined" style={{ marginLeft: "0.5rem", color: "#dc3545" }} onClick={cancelHandler} >Cancel</Button>
                 </Box>
             </Box>
         </Container>

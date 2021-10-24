@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link as RouterLink, useHistory, useParams } from "react-router-dom";
 import { Container, Typography, Box, Button, Grid, TextField } from "@material-ui/core";
 import { DataGrid, GridColDef, GridSelectionModel } from '@mui/x-data-grid';
+import Breadcrumbs from '../components/Breadcrumbs';
 import services from "../services";
 
 type RowView = {
@@ -36,53 +37,6 @@ const CreateMO: React.FC = ({ }) => {
         name: "",
     })
 
-    const [pillars, setPillars] = useState<Pillar[]>([]);
-    const [courses, setCourses] = useState<Course[]>([]);
-    const [outcomes, setOutcomes] = useState<MO[]>([]);
-    const [rows, setRows] = useState<RowView[]>([]);
-
-    const [selectedMOIds, setSelectedMOIds] = useState<number[]>([]);
-
-    const handleOnSelectionModelChange = (m: GridSelectionModel) => {
-        const ids = m.map( i => Number(i) );
-        setSelectedMOIds(ids);
-    }
-
-    useEffect(() => {
-        (async () => {
-            const [pillars, perr] = await services.pillars.readAll();
-            if (perr === null && pillars !== null) {
-                setPillars(pillars);
-            }
-
-            const [courses, cerr] = await services.courses.readAll(null);
-            if (cerr === null && courses !== null) {
-                setCourses(courses);
-            }
-
-            const [outcomes, oerr] = await services.outcomes.readAll(null);
-            if (oerr == null && outcomes != null) {
-                setOutcomes(outcomes);
-            }
-        })()
-    }, [])
-
-    useEffect(()=> {
-        const pillarIdToLabel = {};
-        pillars.forEach((p) => {pillarIdToLabel[p.id] = p.name})
-        const courseIdToLabel = {};
-        courses.forEach((c) => {courseIdToLabel[c.id_int] = c.id});
-
-        const rows = outcomes.map((o) => ({
-            id: o.id_int,
-            pillar_label: pillarIdToLabel[o.pillar_id],
-            course_label: courseIdToLabel[o.course_id],
-            outcome_label: o.id,
-            name: o.name,
-        }))
-
-        setRows(rows);
-    }, [outcomes])
 
     const onChangeHandler = (label: string) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,13 +70,18 @@ const CreateMO: React.FC = ({ }) => {
             return;
         }
 
-        history.push(`/pillars/${pid}/courses/${cid}`);
+        history.push(`/dashboard/pillars/${pid}/courses/${cid}`);
         return;
+    }
+
+    const cancelHandler = () => {
+        history.push(`/dashboard/pillars/${pid}/courses/${cid}`);
     }
 
     return (
         <Container>
-            <Box my={2} display="flex" flexDirection="column" alignItems="center">
+            <Breadcrumbs />
+            <Box display="flex" flexDirection="column" alignItems="center">
                 <Box my={2} display="flex" flexDirection="row" justifyContent="space-between" alignSelf="stretch">
                     <Typography variant="h4">Create Measurable Outcome</Typography>
                 </Box>
@@ -163,26 +122,9 @@ const CreateMO: React.FC = ({ }) => {
                     </Grid>
                 </Box>
 
-                <Box my={2} display="flex" alignSelf="stretch" style={{ height: "500px" }}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={2} />
-                        <Grid item xs={8}>
-                            <Box my={1}>
-                                <Typography align="left">Select Prerequisites:</Typography>
-                            </Box>
-                            <DataGrid
-                                checkboxSelection={true}
-                                columns={columns}
-                                rows={rows}
-                                onSelectionModelChange={handleOnSelectionModelChange}
-                            />
-                        </Grid>
-                        <Grid item xs={2} />
-                    </Grid>
-                </Box>
-
                 <Box my={4}>
                     <Button variant="contained" color="primary" onClick={submitForm} >Create Outcome</Button>
+                    <Button variant="outlined" style={{ marginLeft: "0.5rem", color: "#dc3545" }} onClick={cancelHandler} >Cancel</Button>
                 </Box>
             </Box>
         </Container>

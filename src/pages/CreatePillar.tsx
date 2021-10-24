@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Container, Typography, Box, Button, Grid, TextField } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import Breadcrumbs from '../components/Breadcrumbs';
 import services from "../services";
 
 const CreatePillar: React.FC = ({ }) => {
@@ -41,13 +42,18 @@ const CreatePillar: React.FC = ({ }) => {
             return;
         }
 
-        history.push("/pillars");
+        history.push("/dashboard/pillars");
         return;
+    }
+
+    const cancelHandler = () => {
+        history.push(`/dashboard/pillars`);
     }
 
     return (
         <Container>
-            <Box my={2} display="flex" flexDirection="column" alignItems="center">
+            <Breadcrumbs />
+            <Box display="flex" flexDirection="column" alignItems="center">
                 <Box my={2} display="flex" flexDirection="row" justifyContent="space-between" alignSelf="stretch">
                     <Typography variant="h4">Create New Pillar</Typography>
                 </Box>
@@ -98,6 +104,7 @@ const CreatePillar: React.FC = ({ }) => {
                 </Box>
                 <Box my={2}>
                     <Button variant="contained" color="primary" onClick={submitForm} >Create Pillar</Button>
+                    <Button variant="outlined" style={{ marginLeft: "0.5rem", color: "#dc3545" }} onClick={cancelHandler} >Cancel</Button>
                 </Box>
             </Box>
         </Container>
