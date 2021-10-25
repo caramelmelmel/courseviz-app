@@ -8,8 +8,10 @@ import { auth, auth as firebaseAuth } from './firebase'
 import './App.css';
 import Login from './pages/Login'
 
+import NavBarPublic from './components/NavBarPublic';
 import NavBar from './components/NavBar';
 import Dashboard from './pages/Dashboard';
+import DashboardPublic from './pages/DashboardPublic';
 
 import ViewCourse from './pages/ViewCourse';
 import ViewPillar from './pages/ViewPillar';
@@ -62,6 +64,11 @@ const App: React.FC = ({ }) => {
         {/* Unauthenticated routes */}
         <Route exact path="/login">
           <Login />
+        </Route>
+
+        <Route exact path="/visualization">
+          <NavBarPublic />
+          <DashboardPublic />
         </Route>
 
         {/* Authenticated routes */}
@@ -119,7 +126,7 @@ const App: React.FC = ({ }) => {
         </AuthRoute>
 
         <Route>
-          <Redirect to="/dashboard" />
+          <Redirect to="/visualization" />
         </Route>
       </Switch>
     </Router>

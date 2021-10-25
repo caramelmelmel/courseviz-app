@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import xoces from 'xoces';
+import chroma from 'chroma-js';
+import wrap from 'word-wrap';
 
 const XocesWidget: React.FC<{ pillars: Pillar[], courses: Course[], mos: MO[], moLinks: MOLink[], key: any }> = ({
     pillars,
@@ -10,12 +12,41 @@ const XocesWidget: React.FC<{ pillars: Pillar[], courses: Course[], mos: MO[], m
 }) => {
     const CONTAINER_ID = "xoces-widget-container";
 
+
     // set up entities
+    const pillarEntities = pillars.map((p, idx) => ({
+        id: "pillar_" + p.id,
+        pid: p.id,
+        idx: idx,
+        name: p.name,
+        type: "pillar"
+    }));
+
+    const courseEntities = courses.map((c) => ({
+        id: "course_" + c.id_int,
+        pid: c.pillar_id,
+        cid: c.id_int,
+        clabel: c.id,
+        name: `${c.id} - ${c.name}`,
+        type: "course"
+    }));
+
+    const moEntities = mos.map((m) => {
+        const pillarIdx = pillarEntities.find((p) => p.pid == m.pillar_id).idx;
+        const courseId = courseEntities.find((c) => c.cid == m.course_id).clabel;
+        return {
+            id: "mo_" + m.id_int,
+            pillarEntityIdx: pillarIdx,
+            name: `${courseId} ${m.id} - ${m.name}`,
+            type: "mo"
+        }
+    });
+
     const entities: Entity[] = [
         { id: "sutd", name: "SUTD", type: "school" },
-        ...pillars.map((p) => ({ id: "pillar_" + p.id, name: p.name, type: "pillar" })),
-        ...courses.map((c) => ({ id: "course_" + c.id_int, name: `${c.id} - ${c.name}`, type: "course" })),
-        ...mos.map((m) => ({ id: "mo_" + m.id_int, name: `${m.id} - ${m.name}`, type: "mo" })),
+        ...pillarEntities,
+        ...courseEntities,
+        ...moEntities,
     ]
 
     // set up relationships
@@ -66,6 +97,17 @@ const XocesWidget: React.FC<{ pillars: Pillar[], courses: Course[], mos: MO[], m
         })
     })
 
+    const createSetMOEntityColor = (colorScheme: string) => {
+        let fillRange = ['#2686BF', '#BCD693', '#AF7575'];
+        if (colorScheme == "dark") {
+            fillRange = ['#D58C47', '#355CBF', '#4A941E'];
+        }
+
+        const colorScale = chroma.scale(fillRange).domain([0, pillarEntities.length - 1]).mode('lch');
+
+        return (moEntity) => colorScale(moEntity.pillarEntityIdx).hex();
+    }
+
     const xocesConfig: XocesConfig = {
         hierarchy: ["school", "pillar", "course", "mo"],
         data: {
@@ -79,8 +121,11 @@ const XocesWidget: React.FC<{ pillars: Pillar[], courses: Course[], mos: MO[], m
             targetRef: "targetId",
         },
         width: "100%",
-        height: "32rem",
+        height: "48rem",
         colorScheme: "light",
+        nodeColor: createSetMOEntityColor("light"),
+        nodeLabelKey: "name",
+        onMouseOverDirection: "both",
     }
 
     useEffect(() => {
@@ -90,7 +135,7 @@ const XocesWidget: React.FC<{ pillars: Pillar[], courses: Course[], mos: MO[], m
     }, []);
 
     return (
-        <div id={CONTAINER_ID + String(key) }></div>
+        <div id={CONTAINER_ID + String(key)}></div>
     )
 }
 
